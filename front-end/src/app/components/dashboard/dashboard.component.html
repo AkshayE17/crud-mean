@@ -1,0 +1,70 @@
+<div class="dashboard">
+  <div class="profile-card">
+    <div class="profile-header">
+      <img [src]="user.imageUrl || 'assets/default-avatar.png'" alt="Profile Image" class="profile-image">
+      <h1 class="user-name">Welcome, {{ user.name }}</h1>
+    </div>
+    <div class="profile-info">
+      <div class="info-item">
+        <i class="fas fa-envelope"></i>
+        <span class="info-label">Email:</span>
+        <p>{{ user.email }}</p>
+      </div>
+      <div class="info-item">
+        <i class="fas fa-venus-mars"></i>
+        <span class="info-label">Gender:</span>
+        <p>{{ user.gender }}</p>
+      </div>
+      <div class="info-item">
+        <i class="fas fa-mobile-alt"></i>
+        <span class="info-label">Mobile:</span>
+        <p>{{ user.mobile }}</p>
+      </div>
+    </div>
+    <button (click)="editProfile()" class="edit-button">Edit Profile</button>
+  </div>
+
+  <div class="edit-modal" *ngIf="editing">
+    <div class="edit-modal-content">
+      <h2>Edit Profile</h2>
+      <form (ngSubmit)="onSubmit()" class="edit-form">
+        <div *ngIf="user.imageUrl" class="form-group">
+          <img [src]="user.imageUrl" alt="Current Profile Photo" class="current-photo">
+        </div>
+        <div class="form-group">
+          <label for="photo">Profile Photo:</label>
+          <input type="file" id="photo" (change)="onFileSelected($event)" accept="image/*">
+        </div>
+  
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" [(ngModel)]="editedUser.name" name="name" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" [(ngModel)]="editedUser.email" name="email" required>
+        </div>
+  
+        <div class="form-group">
+          <label for="gender">Gender:</label>
+          <select id="gender" [(ngModel)]="editedUser.gender" name="gender" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+  
+        <div class="form-group">
+          <label for="mobile">Mobile:</label>
+          <input type="tel" id="mobile" [(ngModel)]="editedUser.mobile" name="mobile" required>
+        </div>
+  
+        <div class="form-actions">
+          <button type="submit" class="save-button">Save Changes</button>
+          <button type="button" (click)="cancelEdit()" class="cancel-button">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

@@ -1,0 +1,69 @@
+<div class="max-w-6xl mx-auto bg-white p-8 rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Sign Up</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-wrap -mx-3">
+    <!-- Left Column -->
+    <div class="w-full md:w-1/2 px-3">
+      <div class="mb-6">
+        <label for="name" class="block mb-2 text-sm font-medium text-gray-700">Full Name</label>
+        <input type="text" formControlName="name" id="name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="John Doe" required>
+        <p *ngIf="(submitted || form.get('name')?.touched) && form.get('name')?.errors?.['required']" class="mt-1 text-sm text-red-600">Name is required.</p>
+        <p *ngIf="(submitted || form.get('name')?.touched) && form.get('name')?.errors?.['minlength']" class="mt-1 text-sm text-red-600">Name must be at least 2 characters long.</p>
+      </div>
+
+      <div class="mb-6">
+        <label for="email" class="block mb-2 text-sm font-medium text-gray-700">Email Address</label>
+        <input type="email" formControlName="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="john@example.com" required>
+        <p *ngIf="(submitted || form.get('email')?.touched) && form.get('email')?.errors?.['required']" class="mt-1 text-sm text-red-600">Email is required.</p>
+        <p *ngIf="(submitted || form.get('email')?.touched) && form.get('email')?.errors?.['email']" class="mt-1 text-sm text-red-600">Please enter a valid email address.</p>
+      </div>
+
+      <div class="mb-6">
+        <label for="gender" class="block mb-2 text-sm font-medium text-gray-700">Gender</label>
+        <select formControlName="gender" id="gender" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+          <option value="" disabled selected>Select your gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+        <p *ngIf="(submitted || form.get('gender')?.touched) && form.get('gender')?.errors?.['required']" class="mt-1 text-sm text-red-600">Please select your gender.</p>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="w-full md:w-1/2 px-3">
+      <div class="mb-6">
+        <label for="mobile" class="block mb-2 text-sm font-medium text-gray-700">Phone Number</label>
+        <input type="tel" formControlName="mobile" id="mobile" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="1234567890" required>
+        <p *ngIf="(submitted || form.get('mobile')?.touched) && form.get('mobile')?.errors?.['required']" class="mt-1 text-sm text-red-600">Phone number is required.</p>
+        <p *ngIf="(submitted || form.get('mobile')?.touched) && form.get('mobile')?.errors?.['pattern']" class="mt-1 text-sm text-red-600">Please enter a valid 10-digit phone number.</p>
+      </div>
+
+      <div class="mb-6">
+        <label for="password" class="block mb-2 text-sm font-medium text-gray-700">Password</label>
+        <input type="password" formControlName="password" id="password" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <p *ngIf="(submitted || form.get('password')?.touched) && form.get('password')?.errors?.['required']" class="mt-1 text-sm text-red-600">Password is required.</p>
+        <p *ngIf="(submitted || form.get('password')?.touched) && form.get('password')?.errors?.['minlength']" class="mt-1 text-sm text-red-600">Password must be at least 8 characters long.</p>
+      </div>
+
+      <div class="mb-6">
+        <label for="confirmPassword" class="block mb-2 text-sm font-medium text-gray-700">Confirm Password</label>
+        <input type="password" formControlName="confirmPassword" id="confirmPassword" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        <p *ngIf="(submitted || form.get('confirmPassword')?.touched) && form.get('confirmPassword')?.errors?.['required']" class="mt-1 text-sm text-red-600">Please confirm your password.</p>
+        <p *ngIf="(submitted || form.get('confirmPassword')?.touched) && form.hasError('mismatch')" class="mt-1 text-sm text-red-600">Passwords do not match.</p>
+      </div>
+
+      <div class="mb-6">
+        <label for="photo" class="block mb-2 text-sm font-medium text-gray-700">Profile Photo</label>
+        <input type="file" formControlName="photo" id="photo" (change)="onFileSelected($event)" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" accept="image/*" name="photo">
+        <p *ngIf="(submitted || form.get('photo')?.touched) && form.get('photo')?.errors?.['required']" class="mt-1 text-sm text-red-600">Please upload a profile photo.</p>
+      </div>
+    </div>
+
+    <div class="w-full px-3">
+      <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300">
+        Sign Up
+      </button>
+    </div>
+  </form>
+</div>

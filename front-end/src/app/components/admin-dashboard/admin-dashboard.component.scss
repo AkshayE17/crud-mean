@@ -1,0 +1,182 @@
+.admin-dashboard {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+
+  .dashboard-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    .search-bar {
+      display: flex;
+
+      input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px 0 0 5px;
+        outline: none;
+        width: 250px;
+      }
+
+      button {
+        padding: 10px 15px;
+        border: none;
+        background-color: #5cb85c;
+        color: #fff;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: #4cae4c;
+        }
+      }
+    }
+
+    .add-user-btn {
+      padding: 10px 20px;
+      background-color: #337ab7;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: #286090;
+      }
+    }
+  }
+
+  .user-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+
+    thead {
+      background-color: #f9f9f9;
+
+      th {
+        border-bottom: 2px solid #ddd;
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid #ddd;
+
+        &:hover {
+          background-color: #f1f1f1;
+        }
+
+        td {
+          .user-photo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+          }
+
+          .actions {
+            .edit-btn, .delete-btn {
+              padding: 5px 10px;
+              border: none;
+              cursor: pointer;
+              border-radius: 5px;
+              transition: background-color 0.3s;
+            }
+
+           
+          }
+        }
+      }
+    }
+  }
+}
+/* Add this to admin-dashboard.component.scss */
+
+.edit-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.edit-modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.save-button,
+.cancel-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.save-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.cancel-button {
+  background-color: #f44336;
+  color: white;
+}
+.current-photo {
+  max-width: 200px; /* Adjust the maximum width as needed */
+  max-height: 200px; /* Adjust the maximum height as needed */
+  display: block; /* Ensures the image behaves like a block element */
+  margin-bottom: 10px; /* Adds spacing below the image */
+}
+.edit-modal-content {
+  max-height: 80vh; /* Adjust the maximum height as per your design */
+  overflow-y: auto; /* Enable vertical scrolling if content overflows */
+  padding: 20px; /* Add padding to improve spacing */
+}

@@ -1,0 +1,136 @@
+<div class="admin-dashboard">
+  <h1><b>User Management Dashboard</b></h1>
+
+  <div class="dashboard-controls">
+    <div class="search-bar">
+      <input [(ngModel)]="searchTerm" (input)="searchUsers()" placeholder="Search users">
+      <button (click)="searchUsers()">Search</button>
+    </div>
+    <button class="add-user-btn" (click)="toggleAddUser()">Add New User</button>
+  </div>
+
+  <table class="user-table">
+    <thead>
+      <tr>
+        <th>Photo</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Gender</th>
+        <th>Mobile</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>
+          <img [src]="user.imageUrl || 'assets/default-avatar.png'" alt="{{ user.name }}" class="user-photo">
+        </td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.gender }}</td>
+        <td>{{ user.mobile }}</td>
+        <td class="actions">
+          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" (click)="editUser(user)">Edit</button>
+          <button class="bg-red-500 text-white py-2 px-4 rounded-full" (click)="deleteUser(user._id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Add New User Modal -->
+  <div class="edit-modal" *ngIf="showAddUser">
+    <div class="edit-modal-content">
+      <h2>Add New User</h2>
+      <form [formGroup]="addUserForm" (ngSubmit)="addUser()">
+        <div class="form-group">
+          <label for="newName">Name:</label>
+          <input type="text" id="newName" formControlName="name" required>
+          <p *ngIf="(submitted || addUserForm.get('name')?.touched) && addUserForm.get('name')?.errors?.['required']" class="mt-1 text-sm text-red-600">Name is required.</p>
+          <p *ngIf="(submitted || addUserForm.get('name')?.touched) && addUserForm.get('name')?.errors?.['minlength']" class="mt-1 text-sm text-red-600">Name must be at least 2 characters long.</p>
+        </div>
+        <div class="form-group">
+          <label for="newEmail">Email:</label>
+          <input type="email" id="newEmail" formControlName="email" required>
+          <p *ngIf="(submitted || addUserForm.get('email')?.touched) && addUserForm.get('email')?.errors?.['required']" class="mt-1 text-sm text-red-600">Email is required.</p>
+          <p *ngIf="(submitted || addUserForm.get('email')?.touched) && addUserForm.get('email')?.errors?.['email']" class="mt-1 text-sm text-red-600">Please enter a valid email address.</p>
+        </div>
+        <div class="form-group">
+          <label for="newGender">Gender:</label>
+          <select id="newGender" formControlName="gender" required>
+            <option value="" disabled selected>Select your gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+          <p *ngIf="(submitted || addUserForm.get('gender')?.touched) && addUserForm.get('gender')?.errors?.['required']" class="mt-1 text-sm text-red-600">Please select your gender.</p>
+        </div>
+        <div class="form-group">
+          <label for="newMobile">Mobile:</label>
+          <input type="tel" id="newMobile" formControlName="mobile" required>
+          <p *ngIf="(submitted || addUserForm.get('mobile')?.touched) && addUserForm.get('mobile')?.errors?.['required']" class="mt-1 text-sm text-red-600">Mobile number is required.</p>
+          <p *ngIf="(submitted || addUserForm.get('mobile')?.touched) && addUserForm.get('mobile')?.errors?.['pattern']" class="mt-1 text-sm text-red-600">Please enter a valid 10-digit mobile number.</p>
+        </div>
+        <div class="form-group">
+          <label for="newPassword">Password:</label>
+          <input type="password" id="newPassword" formControlName="password" required>
+          <p *ngIf="(submitted || addUserForm.get('password')?.touched) && addUserForm.get('password')?.errors?.['required']" class="mt-1 text-sm text-red-600">Password is required.</p>
+          <p *ngIf="(submitted || addUserForm.get('password')?.touched) && addUserForm.get('password')?.errors?.['minlength']" class="mt-1 text-sm text-red-600">Password must be at least 8 characters long.</p>
+        </div>
+        <div class="form-group">
+          <label for="newConfirmPassword">Confirm Password:</label>
+          <input type="password" id="newConfirmPassword" formControlName="confirmPassword" required>
+          <p *ngIf="(submitted || addUserForm.get('confirmPassword')?.touched) && addUserForm.get('confirmPassword')?.errors?.['required']" class="mt-1 text-sm text-red-600">Please confirm your password.</p>
+          <p *ngIf="(submitted || addUserForm.get('confirmPassword')?.touched) && addUserForm.hasError('mismatch')" class="mt-1 text-sm text-red-600">Passwords do not match.</p>
+        </div>
+        <div class="form-group">
+          <label for="newPhoto">Profile Photo:</label>
+          <input type="file" id="newPhoto" (change)="onFileSelected($event)" formControlName="photo" required>
+          <p *ngIf="(submitted || addUserForm.get('photo')?.touched) && addUserForm.get('photo')?.errors?.['required']" class="mt-1 text-sm text-red-600">Please upload a profile photo.</p>
+        </div>      
+        <div class="form-actions">
+          <button type="submit" class="save-button">Add User</button>
+          <button type="button" (click)="toggleAddUser()" class="cancel-button">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="edit-modal" *ngIf="editingUser">
+    <div class="edit-modal-content">
+      <h2>Edit User</h2>
+      <form (ngSubmit)="saveChanges()" class="edit-form">
+        <div *ngIf="editedUser.imageUrl" class="form-group">
+          <img [src]="editedUser.imageUrl" alt="Current Profile Photo" class="current-photo">
+        </div>
+        <div class="form-group">
+          <label for="photo">Profile Photo:</label>
+          <input type="file" id="photo" (change)="onFileSelected($event)" accept="image/*">
+        </div>
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" id="name" [(ngModel)]="editedUser.name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" [(ngModel)]="editedUser.email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="gender">Gender:</label>
+          <select id="gender" [(ngModel)]="editedUser.gender" name="gender" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="mobile">Mobile:</label>
+          <input type="tel" id="mobile" [(ngModel)]="editedUser.mobile" name="mobile" required>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="save-button">Save Changes</button>
+          <button type="button" (click)="cancelEdit()" class="cancel-button">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
